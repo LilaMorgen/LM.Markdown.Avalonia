@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="LM.Markdown.Avalonia.TestDemo/LM.Markdown.Avalonia.TestDemo.csproj" />
+  <Project Path="LM.Markdown.Avalonia/LM.Markdown.Avalonia.csproj" />
+</Solution>
