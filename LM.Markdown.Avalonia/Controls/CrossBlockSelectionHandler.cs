@@ -1013,12 +1013,12 @@ internal sealed class CrossBlockSelectionHandler
         {
             if (element is SelectableTextBlock stb && stb.SelectionBrush is IBrush brush)
             {
-                _cachedSelectionBrush = brush;
-                return brush;
+                _cachedSelectionBrush = CreateSelectionTintBrush(brush, 0.18);
+                return _cachedSelectionBrush;
             }
         }
 
-        _cachedSelectionBrush = new SolidColorBrush(Color.FromArgb(100, 65, 105, 225));
+        _cachedSelectionBrush = new SolidColorBrush(Color.FromArgb(46, 65, 105, 225));
         return _cachedSelectionBrush;
     }
 
@@ -1027,18 +1027,25 @@ internal sealed class CrossBlockSelectionHandler
         if (_cachedSelectionOverlayBrush != null)
             return _cachedSelectionOverlayBrush;
 
-        _cachedSelectionOverlayBrush = CreateSemiTransparentOverlayBrush(GetNonTextBlockSelectionBrush());
+        foreach (var element in _orderedElements)
+        {
+            if (element is SelectableTextBlock stb && stb.SelectionBrush is IBrush brush)
+            {
+                _cachedSelectionOverlayBrush = CreateSelectionTintBrush(brush, 0.35);
+                return _cachedSelectionOverlayBrush;
+            }
+        }
+
+        _cachedSelectionOverlayBrush = new SolidColorBrush(Color.FromArgb(90, 65, 105, 225));
         return _cachedSelectionOverlayBrush;
     }
 
-    private static IBrush CreateSemiTransparentOverlayBrush(IBrush brush)
+    private static IBrush CreateSelectionTintBrush(IBrush brush, double targetOpacity)
     {
-        const double targetOpacity = 0.35;
-
         if (brush is ISolidColorBrush solidBrush)
         {
             var effectiveAlpha = (byte)Math.Clamp(
-                solidBrush.Color.A * solidBrush.Opacity * targetOpacity,
+                255 * solidBrush.Opacity * targetOpacity,
                 0,
                 255);
 
@@ -1046,7 +1053,7 @@ internal sealed class CrossBlockSelectionHandler
                 Color.FromArgb(effectiveAlpha, solidBrush.Color.R, solidBrush.Color.G, solidBrush.Color.B));
         }
 
-        return new SolidColorBrush(Color.FromArgb(90, 65, 105, 225));
+        return new SolidColorBrush(Color.FromArgb((byte)Math.Clamp(255 * targetOpacity, 0, 255), 65, 105, 225));
     }
 
     private static Border? TryGetNonTextBlockOverlay(Border border)

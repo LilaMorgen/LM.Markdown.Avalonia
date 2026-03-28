@@ -18,6 +18,7 @@ public class ParagraphBlockRenderer : BlockRenderer<ParagraphBlock>
             Margin = context.GetThickness("MarkdownParagraphMargin", new Thickness(0, 0, 0, 10)),
             LineHeight = context.GetDouble("MarkdownFontSize", 14) * context.GetDouble("MarkdownLineHeight", 1.6),
         };
+        context.ApplySelectableTextStyle(textBlock);
 
         if (block.Inline != null)
         {

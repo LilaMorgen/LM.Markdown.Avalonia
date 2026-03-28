@@ -21,6 +21,7 @@ public class HtmlBlockRenderer : BlockRenderer<HtmlBlock>
             TextWrapping = TextWrapping.Wrap,
             Margin = context.GetThickness("MarkdownBlockMargin", new Thickness(0, 0, 0, 12)),
         };
+        context.ApplySelectableTextStyle(textBlock);
 
         return textBlock;
     }

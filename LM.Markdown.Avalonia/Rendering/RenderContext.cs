@@ -14,6 +14,7 @@ public class RenderContext
     private readonly List<IBlockRenderer> _blockRenderers = [];
     private readonly List<IInlineRenderer> _inlineRenderers = [];
     private readonly Dictionary<Control, (int Start, int End)> _sourceSpanMap = new();
+    private IBrush? _selectionBrush;
 
     public ISyntaxHighlighter? SyntaxHighlighter { get; set; }
     public IResourceLoader? ResourceLoader { get; set; }
@@ -116,6 +117,37 @@ public class RenderContext
 
     public FontFamily GetFontFamily(string key, FontFamily? fallback = null)
         => GetResource(key, fallback ?? FontFamily.Default);
+
+    public void ApplySelectableTextStyle(SelectableTextBlock textBlock)
+        => textBlock.SelectionBrush = GetSelectionBrush();
+
+    public IBrush GetSelectionBrush()
+    {
+        if (_selectionBrush != null)
+            return _selectionBrush;
+
+        if (Owner.TryFindResource("TextSelectionThemeBrush", Owner.ActualThemeVariant, out var value)
+            && value is IBrush brush)
+        {
+            _selectionBrush = CreateSelectionTintBrush(brush, 0.35);
+            return _selectionBrush;
+        }
+
+        _selectionBrush = new SolidColorBrush(Color.FromArgb(90, 65, 105, 225));
+        return _selectionBrush;
+    }
+
+    private static IBrush CreateSelectionTintBrush(IBrush brush, double targetOpacity)
+    {
+        if (brush is ISolidColorBrush solidBrush)
+        {
+            var effectiveAlpha = (byte)Math.Clamp(255 * solidBrush.Opacity * targetOpacity, 0, 255);
+            return new SolidColorBrush(
+                Color.FromArgb(effectiveAlpha, solidBrush.Color.R, solidBrush.Color.G, solidBrush.Color.B));
+        }
+
+        return new SolidColorBrush(Color.FromArgb((byte)Math.Clamp(255 * targetOpacity, 0, 255), 65, 105, 225));
+    }
 
     private static Control CreateFallbackBlock(Markdig.Syntax.Block block)
     {

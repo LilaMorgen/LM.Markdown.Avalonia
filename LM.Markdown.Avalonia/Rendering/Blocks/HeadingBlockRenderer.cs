@@ -29,6 +29,7 @@ public class HeadingBlockRenderer : BlockRenderer<HeadingBlock>
             FontFamily = context.GetFontFamily("MarkdownFontFamily"),
             LineHeight = fontSize * 1.4,
         };
+        context.ApplySelectableTextStyle(textBlock);
 
         if (block.Inline != null)
         {

@@ -24,6 +24,7 @@ public class CodeBlockRenderer : BlockRenderer<CodeBlock>
             Foreground = context.GetBrush("MarkdownCodeBlockForeground"),
             TextWrapping = TextWrapping.NoWrap,
         };
+        context.ApplySelectableTextStyle(textBlock);
 
         var border = new Border
         {

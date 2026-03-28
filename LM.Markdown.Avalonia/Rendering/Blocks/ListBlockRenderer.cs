@@ -99,6 +99,7 @@ public class ListBlockRenderer : BlockRenderer<ListBlock>
                             FontFamily = context.GetFontFamily("MarkdownFontFamily"),
                             LineHeight = context.GetDouble("MarkdownFontSize", 14) * context.GetDouble("MarkdownLineHeight", 1.6),
                         };
+                        context.ApplySelectableTextStyle(tb);
 
                         if (p.Inline != null)
                         {

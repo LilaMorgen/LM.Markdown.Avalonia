@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
+using LM.Markdown.Avalonia.Controls;
 using Markdig.Extensions.Mathematics;
 using Markdig.Syntax;
 
@@ -25,17 +26,37 @@ public class MathBlockRenderer : BlockRenderer<MathBlock>
                 {
                     formulaControl.HorizontalAlignment = HorizontalAlignment.Center;
 
-                    var border = new Border
+                    var contentBorder = new Border
                     {
                         Child = formulaControl,
                         Padding = context.GetThickness("MarkdownSpecialBlockPadding", new Thickness(16)),
-                        Margin = context.GetThickness("MarkdownBlockMargin", new Thickness(0, 0, 0, 12)),
                         HorizontalAlignment = HorizontalAlignment.Stretch,
                     };
 
-                    // Mark so CrossBlockSelectionHandler can include this non-text
-                    // block in multi-block selection and show a selection overlay.
-                    border.Classes.Add("selectable-block");
+                    var overlay = new Border
+                    {
+                        HorizontalAlignment = HorizontalAlignment.Stretch,
+                        VerticalAlignment = VerticalAlignment.Stretch,
+                        IsHitTestVisible = false,
+                    };
+                    overlay.Classes.Add(CrossBlockSelectionHandler.SelectableBlockOverlayClass);
+
+                    var container = new Grid
+                    {
+                        HorizontalAlignment = HorizontalAlignment.Stretch,
+                        ClipToBounds = false,
+                    };
+                    container.Children.Add(contentBorder);
+                    container.Children.Add(overlay);
+
+                    var border = new Border
+                    {
+                        Child = container,
+                        Margin = context.GetThickness("MarkdownBlockMargin", new Thickness(0, 0, 0, 12)),
+                        HorizontalAlignment = HorizontalAlignment.Stretch,
+                        ClipToBounds = false,
+                    };
+                    border.Classes.Add(CrossBlockSelectionHandler.SelectableBlockClass);
 
                     return border;
                 }
@@ -57,6 +78,7 @@ public class MathBlockRenderer : BlockRenderer<MathBlock>
             HorizontalAlignment = HorizontalAlignment.Center,
             FontStyle = FontStyle.Italic,
         };
+        context.ApplySelectableTextStyle(textBlock);
 
         var fallbackBorder = new Border
         {

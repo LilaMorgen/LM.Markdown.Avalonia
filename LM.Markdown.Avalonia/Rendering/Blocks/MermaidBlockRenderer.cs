@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Svg.Skia;
+using LM.Markdown.Avalonia.Controls;
 using Markdig.Syntax;
 
 namespace LM.Markdown.Avalonia.Rendering.Blocks;
@@ -39,7 +40,7 @@ public class MermaidBlockRenderer : IBlockRenderer
                             HorizontalAlignment = HorizontalAlignment.Center,
                         };
 
-                        var border = new Border
+                        var contentBorder = new Border
                         {
                             Child = image,
                             Background = context.GetBrush("MarkdownSpecialBlockBackground"),
@@ -47,8 +48,34 @@ public class MermaidBlockRenderer : IBlockRenderer
                             BorderThickness = context.GetThickness("MarkdownSpecialBlockBorderThickness", new Thickness(1)),
                             CornerRadius = context.GetCornerRadius("MarkdownSpecialBlockCornerRadius", new CornerRadius(8)),
                             Padding = context.GetThickness("MarkdownSpecialBlockPadding", new Thickness(16)),
-                            Margin = context.GetThickness("MarkdownBlockMargin", new Thickness(0, 0, 0, 12)),
                         };
+
+                        var overlay = new Border
+                        {
+                            HorizontalAlignment = HorizontalAlignment.Stretch,
+                            VerticalAlignment = VerticalAlignment.Stretch,
+                            CornerRadius = context.GetCornerRadius("MarkdownSpecialBlockCornerRadius", new CornerRadius(8)),
+                            IsHitTestVisible = false,
+                        };
+                        overlay.Classes.Add(CrossBlockSelectionHandler.SelectableBlockOverlayClass);
+
+                        var container = new Grid
+                        {
+                            HorizontalAlignment = HorizontalAlignment.Stretch,
+                            ClipToBounds = false,
+                        };
+                        container.Children.Add(contentBorder);
+                        container.Children.Add(overlay);
+
+                        var border = new Border
+                        {
+                            Child = container,
+                            Margin = context.GetThickness("MarkdownBlockMargin", new Thickness(0, 0, 0, 12)),
+                            CornerRadius = context.GetCornerRadius("MarkdownSpecialBlockCornerRadius", new CornerRadius(8)),
+                            HorizontalAlignment = HorizontalAlignment.Stretch,
+                            ClipToBounds = false,
+                        };
+                        border.Classes.Add(CrossBlockSelectionHandler.SelectableBlockClass);
 
                         return border;
                     }
@@ -77,6 +104,7 @@ public class MermaidBlockRenderer : IBlockRenderer
             Foreground = context.GetBrush("MarkdownCodeBlockForeground"),
             TextWrapping = TextWrapping.NoWrap,
         };
+        context.ApplySelectableTextStyle(codeBlock);
 
         var panel = new StackPanel();
         panel.Children.Add(headerLabel);

@@ -95,6 +95,7 @@ public class FencedCodeBlockRenderer : BlockRenderer<FencedCodeBlock>
             TextWrapping = TextWrapping.NoWrap,
             Padding = context.GetThickness("MarkdownCodeBlockPadding", new Thickness(16)),
         };
+        context.ApplySelectableTextStyle(codeTextBlock);
         codeTextBlock.Inlines ??= new InlineCollection();
 
         // Try syntax highlighting
