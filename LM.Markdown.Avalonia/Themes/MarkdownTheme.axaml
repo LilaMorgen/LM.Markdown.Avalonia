@@ -1,0 +1,98 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.ThemeDictionaries>
+    <ResourceDictionary x:Key="Light">
+      <SolidColorBrush x:Key="MarkdownForeground" Color="#1C1F23" />
+      <SolidColorBrush x:Key="MarkdownSecondaryForeground" Color="#5C6068" />
+      <SolidColorBrush x:Key="MarkdownBackground" Color="#FFFFFF" />
+      <SolidColorBrush x:Key="MarkdownHeadingForeground" Color="#1C1F23" />
+      <SolidColorBrush x:Key="MarkdownHeadingBorderBrush" Color="#E0E2E6" />
+      <SolidColorBrush x:Key="MarkdownLinkForeground" Color="#3370FF" />
+      <SolidColorBrush x:Key="MarkdownLinkHoverForeground" Color="#2458D6" />
+      <SolidColorBrush x:Key="MarkdownInlineCodeBackground" Color="#F2F3F5" />
+      <SolidColorBrush x:Key="MarkdownInlineCodeForeground" Color="#D83B01" />
+      <SolidColorBrush x:Key="MarkdownCodeBlockBackground" Color="#F7F8FA" />
+      <SolidColorBrush x:Key="MarkdownCodeBlockForeground" Color="#1C1F23" />
+      <SolidColorBrush x:Key="MarkdownCodeBlockBorderBrush" Color="#E0E2E6" />
+      <SolidColorBrush x:Key="MarkdownCodeBlockHeaderBackground" Color="#ECEEF1" />
+      <SolidColorBrush x:Key="MarkdownCodeBlockHeaderForeground" Color="#5C6068" />
+      <SolidColorBrush x:Key="MarkdownBlockquoteBackground" Color="#F7F8FA" />
+      <SolidColorBrush x:Key="MarkdownBlockquoteBorderBrush" Color="#3370FF" />
+      <SolidColorBrush x:Key="MarkdownBlockquoteForeground" Color="#5C6068" />
+      <SolidColorBrush x:Key="MarkdownTableBorderBrush" Color="#E0E2E6" />
+      <SolidColorBrush x:Key="MarkdownTableHeaderBackground" Color="#F2F3F5" />
+      <SolidColorBrush x:Key="MarkdownTableHeaderForeground" Color="#1C1F23" />
+      <SolidColorBrush x:Key="MarkdownTableRowBackground" Color="Transparent" />
+      <SolidColorBrush x:Key="MarkdownTableRowAlternateBackground" Color="#FAFBFC" />
+      <SolidColorBrush x:Key="MarkdownThematicBreakBrush" Color="#E0E2E6" />
+      <SolidColorBrush x:Key="MarkdownTaskListCheckBrush" Color="#3370FF" />
+      <SolidColorBrush x:Key="MarkdownSpecialBlockBackground" Color="#F7F8FA" />
+      <SolidColorBrush x:Key="MarkdownSpecialBlockBorderBrush" Color="#E0E2E6" />
+      <SolidColorBrush x:Key="MarkdownErrorForeground" Color="#D83B01" />
+    </ResourceDictionary>
+    <ResourceDictionary x:Key="Dark">
+      <SolidColorBrush x:Key="MarkdownForeground" Color="#E0E2E6" />
+      <SolidColorBrush x:Key="MarkdownSecondaryForeground" Color="#8F959E" />
+      <SolidColorBrush x:Key="MarkdownBackground" Color="#1C1F23" />
+      <SolidColorBrush x:Key="MarkdownHeadingForeground" Color="#F0F1F3" />
+      <SolidColorBrush x:Key="MarkdownHeadingBorderBrush" Color="#3D4048" />
+      <SolidColorBrush x:Key="MarkdownLinkForeground" Color="#5B8FF9" />
+      <SolidColorBrush x:Key="MarkdownLinkHoverForeground" Color="#78A3FB" />
+      <SolidColorBrush x:Key="MarkdownInlineCodeBackground" Color="#2E3238" />
+      <SolidColorBrush x:Key="MarkdownInlineCodeForeground" Color="#F09070" />
+      <SolidColorBrush x:Key="MarkdownCodeBlockBackground" Color="#22252A" />
+      <SolidColorBrush x:Key="MarkdownCodeBlockForeground" Color="#E0E2E6" />
+      <SolidColorBrush x:Key="MarkdownCodeBlockBorderBrush" Color="#3D4048" />
+      <SolidColorBrush x:Key="MarkdownCodeBlockHeaderBackground" Color="#2E3238" />
+      <SolidColorBrush x:Key="MarkdownCodeBlockHeaderForeground" Color="#8F959E" />
+      <SolidColorBrush x:Key="MarkdownBlockquoteBackground" Color="#22252A" />
+      <SolidColorBrush x:Key="MarkdownBlockquoteBorderBrush" Color="#5B8FF9" />
+      <SolidColorBrush x:Key="MarkdownBlockquoteForeground" Color="#8F959E" />
+      <SolidColorBrush x:Key="MarkdownTableBorderBrush" Color="#3D4048" />
+      <SolidColorBrush x:Key="MarkdownTableHeaderBackground" Color="#2E3238" />
+      <SolidColorBrush x:Key="MarkdownTableHeaderForeground" Color="#E0E2E6" />
+      <SolidColorBrush x:Key="MarkdownTableRowBackground" Color="Transparent" />
+      <SolidColorBrush x:Key="MarkdownTableRowAlternateBackground" Color="#252830" />
+      <SolidColorBrush x:Key="MarkdownThematicBreakBrush" Color="#3D4048" />
+      <SolidColorBrush x:Key="MarkdownTaskListCheckBrush" Color="#5B8FF9" />
+      <SolidColorBrush x:Key="MarkdownSpecialBlockBackground" Color="#22252A" />
+      <SolidColorBrush x:Key="MarkdownSpecialBlockBorderBrush" Color="#3D4048" />
+      <SolidColorBrush x:Key="MarkdownErrorForeground" Color="#F09070" />
+    </ResourceDictionary>
+  </ResourceDictionary.ThemeDictionaries>
+  <x:Double x:Key="MarkdownFontSize">14</x:Double>
+  <x:Double x:Key="MarkdownH1FontSize">28</x:Double>
+  <x:Double x:Key="MarkdownH2FontSize">24</x:Double>
+  <x:Double x:Key="MarkdownH3FontSize">20</x:Double>
+  <x:Double x:Key="MarkdownH4FontSize">16</x:Double>
+  <x:Double x:Key="MarkdownH5FontSize">14</x:Double>
+  <x:Double x:Key="MarkdownH6FontSize">13</x:Double>
+  <x:Double x:Key="MarkdownCodeFontSize">13</x:Double>
+  <x:Double x:Key="MarkdownSmallFontSize">12</x:Double>
+  <FontFamily x:Key="MarkdownFontFamily">avares://Avalonia.Fonts.Inter/Assets#Inter, Microsoft YaHei UI, PingFang SC, sans-serif</FontFamily>
+  <FontFamily x:Key="MarkdownCodeFontFamily">Cascadia Code, Cascadia Mono, Consolas, JetBrains Mono, Menlo, Monaco, monospace</FontFamily>
+  <Thickness x:Key="MarkdownBlockMargin">0,0,0,12</Thickness>
+  <Thickness x:Key="MarkdownHeadingMargin">0,16,0,8</Thickness>
+  <Thickness x:Key="MarkdownParagraphMargin">0,0,0,10</Thickness>
+  <Thickness x:Key="MarkdownListItemMargin">0,2,0,2</Thickness>
+  <Thickness x:Key="MarkdownListIndent">24,0,0,0</Thickness>
+  <Thickness x:Key="MarkdownCodeBlockPadding">16</Thickness>
+  <Thickness x:Key="MarkdownCodeBlockBorderThickness">1</Thickness>
+  <CornerRadius x:Key="MarkdownCodeBlockCornerRadius">8</CornerRadius>
+  <Thickness x:Key="MarkdownCodeBlockHeaderPadding">12,8</Thickness>
+  <Thickness x:Key="MarkdownInlineCodePadding">4,2</Thickness>
+  <CornerRadius x:Key="MarkdownInlineCodeCornerRadius">4</CornerRadius>
+  <x:Double x:Key="MarkdownInlineImageMaxHeight">260</x:Double>
+  <x:Double x:Key="MarkdownBlockImageMaxHeight">0</x:Double>
+  <x:Double x:Key="MarkdownBlockImageMaxWidth">0</x:Double>
+  <Thickness x:Key="MarkdownBlockquotePadding">16,8,16,8</Thickness>
+  <Thickness x:Key="MarkdownBlockquoteBorderThickness">3,0,0,0</Thickness>
+  <CornerRadius x:Key="MarkdownBlockquoteCornerRadius">0,4,4,0</CornerRadius>
+  <Thickness x:Key="MarkdownTableCellPadding">12,8</Thickness>
+  <Thickness x:Key="MarkdownTableBorderThickness">1</Thickness>
+  <x:Double x:Key="MarkdownThematicBreakHeight">1</x:Double>
+  <Thickness x:Key="MarkdownThematicBreakMargin">0,16,0,16</Thickness>
+  <Thickness x:Key="MarkdownSpecialBlockPadding">16</Thickness>
+  <Thickness x:Key="MarkdownSpecialBlockBorderThickness">1</Thickness>
+  <CornerRadius x:Key="MarkdownSpecialBlockCornerRadius">8</CornerRadius>
+  <x:Double x:Key="MarkdownLineHeight">1.6</x:Double>
+</ResourceDictionary>

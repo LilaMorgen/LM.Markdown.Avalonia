@@ -2,8 +2,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:md="clr-namespace:LM.Markdown.Avalonia.Controls;assembly=LM.Markdown.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
         x:Class="LM.Markdown.Avalonia.TestDemo.MainWindow"
-        Title="LM.Markdown.Avalonia.TestDemo">
-    Welcome to Avalonia!
+        Title="LM.Markdown.Avalonia - Demo" Width="1000" Height="700">
+
+    <DockPanel Margin="0">
+        <!-- Top toolbar -->
+        <DockPanel DockPanel.Dock="Top" Margin="12,8">
+            <TextBlock Text="LM.Markdown.Avalonia Demo"
+                       FontSize="16" FontWeight="Bold"
+                       VerticalAlignment="Center" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+                <Button x:Name="BtnStatic" Content="Static Render" />
+                <Button x:Name="BtnStream" Content="Streaming Demo" />
+                <Button x:Name="BtnClear" Content="Clear" />
+                <ToggleSwitch x:Name="ThemeToggle" Content="Dark" OffContent="Light" OnContent="Dark" />
+            </StackPanel>
+        </DockPanel>
+
+        <Border BorderThickness="0,1,0,0" BorderBrush="#E0E2E6">
+            <md:MarkdownViewer x:Name="MdViewer" Margin="16" />
+        </Border>
+    </DockPanel>
 </Window>
