@@ -107,6 +107,12 @@ internal sealed class CrossBlockSelectionHandler
     public void Detach()
     {
         StopAutoScroll();
+        _orderedElements.Clear();
+        _anchorElement = null;
+        _markdownSource = string.Empty;
+        _sourceSpanMap = new Dictionary<Control, (int Start, int End)>();
+        _isPointerPressed = false;
+        _isCrossBlockMode = false;
         _scrollViewer.RemoveHandler(InputElement.PointerPressedEvent, (EventHandler<PointerPressedEventArgs>)OnPointerPressed);
         _scrollViewer.RemoveHandler(InputElement.PointerMovedEvent, (EventHandler<PointerEventArgs>)OnPointerMoved);
         _scrollViewer.RemoveHandler(InputElement.PointerReleasedEvent, (EventHandler<PointerReleasedEventArgs>)OnPointerReleased);

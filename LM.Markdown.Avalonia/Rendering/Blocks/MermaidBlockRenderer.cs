@@ -100,14 +100,14 @@ public class MermaidBlockRenderer : IBlockRenderer
     {
         try
         {
-            return SvgSource.Load(svgContent);
+            return SvgSource.LoadFromSvg(svgContent);
         }
         catch
         {
             try
             {
-                var dataUri = $"data:image/svg+xml;utf8,{Uri.EscapeDataString(svgContent)}";
-                return SvgSource.Load(dataUri);
+                using var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(svgContent));
+                return SvgSource.LoadFromStream(stream);
             }
             catch
             {

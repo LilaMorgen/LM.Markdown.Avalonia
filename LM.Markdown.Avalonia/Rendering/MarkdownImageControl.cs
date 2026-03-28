@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using Markdig.Syntax.Inlines;
 
 namespace LM.Markdown.Avalonia.Rendering;
@@ -14,6 +15,9 @@ internal sealed class MarkdownImageControl : Border
     private readonly bool _isBlockImage;
     private readonly Image _image;
     private readonly TextBlock _placeholder;
+    private CancellationTokenSource? _loadCancellation;
+    private bool _loadStarted;
+    private bool _loadCompleted;
 
     private MarkdownImageControl(RenderContext context, string sourceUrl, string altText, bool isBlockImage)
     {
@@ -55,8 +59,20 @@ internal sealed class MarkdownImageControl : Border
         var source = inline.Url ?? string.Empty;
         var altText = ExtractAltText(inline);
         var control = new MarkdownImageControl(context, source, altText, isBlockImage);
-        control.LoadAsync();
+        control.StartLoading();
         return control;
+    }
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        StartLoading();
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        _loadCancellation?.Cancel();
+        base.OnDetachedFromVisualTree(e);
     }
 
     protected override Size MeasureOverride(Size availableSize)
@@ -96,16 +112,33 @@ internal sealed class MarkdownImageControl : Border
         return new Size(finalSize.Width, arrangedHeight);
     }
 
-    private async void LoadAsync()
+    private void StartLoading()
     {
+        if (_loadCompleted || _loadStarted || _context.ResourceLoader == null || string.IsNullOrWhiteSpace(SourceUrl))
+            return;
+
+        _loadStarted = true;
+        var cancellationTokenSource = new CancellationTokenSource();
+        _loadCancellation = cancellationTokenSource;
+        LoadAsync(cancellationTokenSource);
+    }
+
+    private async void LoadAsync(CancellationTokenSource cancellationTokenSource)
+    {
+        var cancellationToken = cancellationTokenSource.Token;
         if (_context.ResourceLoader == null || string.IsNullOrWhiteSpace(SourceUrl))
             return;
 
         try
         {
-            var loadedImage = await _context.ResourceLoader.LoadImageAsync(SourceUrl);
-            await Dispatcher.UIThread.InvokeAsync(() =>
+            var loadedImage = await _context.ResourceLoader.LoadImageAsync(SourceUrl, cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await Dispatcher.UIThread.InvokeAsync(new Action(() =>
             {
+                if (cancellationToken.IsCancellationRequested)
+                    return;
+
                 if (loadedImage != null)
                 {
                     _image.Source = loadedImage;
@@ -121,19 +154,37 @@ internal sealed class MarkdownImageControl : Border
                 InvalidateVisual();
                 (Parent as Layoutable)?.InvalidateMeasure();
                 (Parent as Layoutable)?.InvalidateArrange();
-            });
+                _loadCompleted = true;
+            }));
+        }
+        catch (OperationCanceledException)
+        {
         }
         catch
         {
-            await Dispatcher.UIThread.InvokeAsync(() =>
+            await Dispatcher.UIThread.InvokeAsync(new Action(() =>
             {
+                if (cancellationToken.IsCancellationRequested)
+                    return;
+
                 Child = CreateErrorText();
                 InvalidateMeasure();
                 InvalidateArrange();
                 InvalidateVisual();
                 (Parent as Layoutable)?.InvalidateMeasure();
                 (Parent as Layoutable)?.InvalidateArrange();
-            });
+                _loadCompleted = true;
+            }));
+        }
+        finally
+        {
+            _loadStarted = false;
+
+            if (ReferenceEquals(_loadCancellation, cancellationTokenSource))
+            {
+                cancellationTokenSource.Dispose();
+                _loadCancellation = null;
+            }
         }
     }
 

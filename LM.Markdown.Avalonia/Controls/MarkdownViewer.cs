@@ -17,6 +17,8 @@ namespace LM.Markdown.Avalonia.Controls;
 public class MarkdownViewer : Control
 {
     private const double AutoScrollBottomTolerance = 2.0;
+    private static readonly IReadOnlyDictionary<Control, (int Start, int End)> EmptySourceSpanMap =
+        new Dictionary<Control, (int Start, int End)>();
 
     private StackPanel? _contentPanel;
     private ScrollViewer? _scrollViewer;
@@ -27,6 +29,7 @@ public class MarkdownViewer : Control
     private CrossBlockSelectionHandler? _selectionHandler;
     private IDisposable? _scrollOffsetSubscription;
     private bool _stickToBottom = true;
+    private bool _scrollToEndPending;
 
     private ISyntaxHighlighter? _syntaxHighlighter;
     private IResourceLoader? _resourceLoader;
@@ -128,6 +131,10 @@ public class MarkdownViewer : Control
     {
         _scrollOffsetSubscription?.Dispose();
         _scrollOffsetSubscription = null;
+        _selectionHandler?.Detach();
+        _selectionHandler = null;
+        _renderer?.Context.ClearSourceSpanMap();
+        _scrollToEndPending = false;
         base.OnDetachedFromVisualTree(e);
     }
 
@@ -136,6 +143,7 @@ public class MarkdownViewer : Control
         if (_contentPanel != null)
         {
             EnsureScrollOffsetSubscription();
+            EnsureSelectionHandler();
             return;
         }
 
@@ -156,9 +164,22 @@ public class MarkdownViewer : Control
         VisualChildren.Add(_scrollViewer);
         LogicalChildren.Add(_scrollViewer);
 
+        EnsureSelectionHandler();
+    }
+
+    private void EnsureSelectionHandler()
+    {
+        if (_contentPanel == null || _scrollViewer == null)
+            return;
+
         if (EnableUnifiedSelection)
         {
-            _selectionHandler = new CrossBlockSelectionHandler(_contentPanel, _scrollViewer);
+            _selectionHandler ??= new CrossBlockSelectionHandler(_contentPanel, _scrollViewer);
+        }
+        else if (_selectionHandler != null)
+        {
+            _selectionHandler.Detach();
+            _selectionHandler = null;
         }
     }
 
@@ -210,6 +231,8 @@ public class MarkdownViewer : Control
         _currentDocument = null;
         _stickToBottom = true;
         SetValue(MarkdownProperty, null);
+        _renderer?.Context.ClearSourceSpanMap();
+        _selectionHandler?.UpdateSourceMapping(string.Empty, EmptySourceSpanMap);
         _contentPanel?.Children.Clear();
     }
 
@@ -235,6 +258,8 @@ public class MarkdownViewer : Control
         {
             _currentMarkdown = string.Empty;
             _currentDocument = null;
+            _renderer?.Context.ClearSourceSpanMap();
+            _selectionHandler?.UpdateSourceMapping(string.Empty, EmptySourceSpanMap);
             _contentPanel.Children.Clear();
             return;
         }
@@ -254,6 +279,7 @@ public class MarkdownViewer : Control
         try
         {
             _pipeline ??= MarkdownPipelineFactory.Create();
+            _renderer!.Context.ClearSourceSpanMap();
             var document = MarkdownPipelineFactory.Parse(markdown, _pipeline);
             var controls = _renderer!.Render(document);
 
@@ -273,15 +299,16 @@ public class MarkdownViewer : Control
         }
         catch
         {
+            _renderer?.Context.ClearSourceSpanMap();
+            _selectionHandler?.UpdateSourceMapping(string.Empty, EmptySourceSpanMap);
             _contentPanel.Children.Clear();
             _contentPanel.Children.Add(new TextBlock
             {
                 Text = markdown,
                 TextWrapping = TextWrapping.Wrap,
             });
-
-                }
-            }
+        }
+    }
 
     private void RenderIncremental(string previousMarkdown, string markdown)
     {
@@ -360,8 +387,14 @@ public class MarkdownViewer : Control
 
     private void ScrollToEnd()
     {
+        if (_scrollToEndPending)
+            return;
+
+        _scrollToEndPending = true;
         Dispatcher.UIThread.Post(() =>
         {
+            _scrollToEndPending = false;
+
             if (!AutoScroll || !_stickToBottom)
                 return;
 
@@ -451,6 +484,10 @@ public class MarkdownViewer : Control
             {
                 RenderFull(_currentMarkdown);
             }
+        }
+        else if (change.Property == EnableUnifiedSelectionProperty)
+        {
+            EnsureSelectionHandler();
         }
     }
 }

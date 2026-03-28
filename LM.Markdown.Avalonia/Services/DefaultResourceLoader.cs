@@ -8,7 +8,9 @@ namespace LM.Markdown.Avalonia.Services;
 
 public class DefaultResourceLoader : IResourceLoader
 {
+    private const int MaxCacheEntries = 64;
     private readonly ConcurrentDictionary<string, IImage?> _cache = new();
+    private readonly ConcurrentQueue<string> _cacheOrder = new();
     private readonly HttpClient _httpClient;
     private readonly string? _basePath;
 
@@ -31,17 +33,52 @@ public class DefaultResourceLoader : IResourceLoader
         try
         {
             var image = await LoadImageCoreAsync(source, cancellationToken);
-            _cache.TryAdd(source, image);
+            AddToCache(source, image);
             return image;
         }
         catch
         {
-            _cache.TryAdd(source, null);
+            AddToCache(source, null);
             return null;
         }
     }
 
-    public void ClearCache() => _cache.Clear();
+    public void ClearCache()
+    {
+        while (_cacheOrder.TryDequeue(out _))
+        {
+        }
+
+        foreach (var entry in _cache)
+        {
+            DisposeImage(entry.Value);
+        }
+
+        _cache.Clear();
+    }
+
+    private void AddToCache(string source, IImage? image)
+    {
+        if (_cache.TryAdd(source, image))
+        {
+            _cacheOrder.Enqueue(source);
+            TrimCache();
+            return;
+        }
+
+        _cache[source] = image;
+    }
+
+    private void TrimCache()
+    {
+        while (_cache.Count > MaxCacheEntries && _cacheOrder.TryDequeue(out var key))
+        {
+            if (_cache.TryRemove(key, out var removed))
+            {
+                DisposeImage(removed);
+            }
+        }
+    }
 
     private async Task<IImage?> LoadImageCoreAsync(string source, CancellationToken cancellationToken)
     {
@@ -105,5 +142,13 @@ public class DefaultResourceLoader : IResourceLoader
         if (contentType?.Contains("svg", StringComparison.OrdinalIgnoreCase) == true)
             return true;
         return path.EndsWith(".svg", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static void DisposeImage(IImage? image)
+    {
+        if (image is IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
     }
 }
