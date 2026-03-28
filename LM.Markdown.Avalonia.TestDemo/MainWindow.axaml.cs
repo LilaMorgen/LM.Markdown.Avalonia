@@ -10,6 +10,7 @@ namespace LM.Markdown.Avalonia.TestDemo;
 public partial class MainWindow : Window
 {
     private CancellationTokenSource? _streamCts;
+    private ThemeVariant _currentThemeVariant = ThemeVariant.Light;
 
     private const string SampleMarkdown = """
 # LM.Markdown.Avalonia Demo
@@ -107,7 +108,7 @@ public static AppBuilder BuildAvaloniaApp()
 
 ### Image
 
-![Sample Image1](C:\Users\LilaMorgen\Pictures\wt.jpg)
+![Sample Image1](images/wt.jpg)
 
 ### Math Formula
 
@@ -145,8 +146,11 @@ That was a horizontal rule above.
         var btnStatic = this.FindControl<Button>("BtnStatic")!;
         var btnStream = this.FindControl<Button>("BtnStream")!;
         var btnClear = this.FindControl<Button>("BtnClear")!;
-        var themeToggle = this.FindControl<ToggleSwitch>("ThemeToggle")!;
+        var btnToggleTheme = this.FindControl<Button>("BtnToggleTheme")!;
+        var themeStatusText = this.FindControl<TextBlock>("ThemeStatusText")!;
         var mdViewer = this.FindControl<MarkdownViewer>("MdViewer")!;
+
+        ApplyTheme(ResolveInitialThemeVariant(), themeStatusText);
 
         btnStatic.Click += (_, _) =>
         {
@@ -166,11 +170,13 @@ That was a horizontal rule above.
             mdViewer.ClearMarkdown();
         };
 
-        themeToggle.IsCheckedChanged += (_, _) =>
+        btnToggleTheme.Click += (_, _) =>
         {
-            RequestedThemeVariant = themeToggle.IsChecked == true
-                ? ThemeVariant.Dark
-                : ThemeVariant.Light;
+            var nextThemeVariant = _currentThemeVariant == ThemeVariant.Dark
+                ? ThemeVariant.Light
+                : ThemeVariant.Dark;
+
+            ApplyTheme(nextThemeVariant, themeStatusText);
         };
 
         mdViewer.LinkClicked += (_, e) =>
@@ -210,6 +216,30 @@ That was a horizontal rule above.
         _streamCts?.Cancel();
         _streamCts?.Dispose();
         _streamCts = null;
+    }
+
+    private ThemeVariant ResolveInitialThemeVariant()
+    {
+        if (RequestedThemeVariant == ThemeVariant.Dark)
+        {
+            return ThemeVariant.Dark;
+        }
+
+        if (RequestedThemeVariant == ThemeVariant.Light)
+        {
+            return ThemeVariant.Light;
+        }
+
+        return ActualThemeVariant == ThemeVariant.Dark
+            ? ThemeVariant.Dark
+            : ThemeVariant.Light;
+    }
+
+    private void ApplyTheme(ThemeVariant themeVariant, TextBlock themeStatusText)
+    {
+        _currentThemeVariant = themeVariant;
+        RequestedThemeVariant = themeVariant;
+        themeStatusText.Text = themeVariant == ThemeVariant.Dark ? "Theme: Dark" : "Theme: Light";
     }
 
     private static List<string> SplitIntoChunks(string text, int chunkSize)

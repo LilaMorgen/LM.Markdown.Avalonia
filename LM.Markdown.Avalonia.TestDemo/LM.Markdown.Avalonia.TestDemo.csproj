@@ -24,4 +24,10 @@
   <ItemGroup>
     <ProjectReference Include="..\LM.Markdown.Avalonia\LM.Markdown.Avalonia.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\images\wt.jpg" Link="images\wt.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

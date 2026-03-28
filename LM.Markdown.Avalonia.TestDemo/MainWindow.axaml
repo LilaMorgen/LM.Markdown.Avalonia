@@ -17,7 +17,15 @@
                 <Button x:Name="BtnStatic" Content="Static Render" />
                 <Button x:Name="BtnStream" Content="Streaming Demo" />
                 <Button x:Name="BtnClear" Content="Clear" />
-                <ToggleSwitch x:Name="ThemeToggle" Content="Dark" OffContent="Light" OnContent="Dark" />
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="6">
+                    <Button x:Name="BtnToggleTheme" Content="Toggle Theme" />
+                    <TextBlock Text="|"
+                               VerticalAlignment="Center"
+                               Opacity="0.55" />
+                    <TextBlock x:Name="ThemeStatusText"
+                               Text="Theme: Light"
+                               VerticalAlignment="Center" />
+                </StackPanel>
             </StackPanel>
         </DockPanel>
 
