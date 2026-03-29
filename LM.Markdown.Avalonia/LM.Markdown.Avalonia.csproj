@@ -4,6 +4,19 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <InformationalVersion>1.0.0</InformationalVersion>
+    <PackageId>LM.Markdown.Avalonia</PackageId>
+    <Title>LM.Markdown.Avalonia</Title>
+    <Authors>Lila Morgen</Authors>
+    <Company>Lila Morgen</Company>
+    <Product>LM.Markdown.Avalonia</Product>
+    <Description>Avalonia markdown rendering control with streaming updates, syntax highlighting, math formulas, tables, images, and Mermaid diagram support.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>avalonia;markdown;markdig;mermaid;math;syntax-highlighting</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +30,10 @@
 
   <ItemGroup>
     <AvaloniaResource Include="Themes\**\*.axaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" Link="README.md" />
   </ItemGroup>
 
   <ItemGroup>
