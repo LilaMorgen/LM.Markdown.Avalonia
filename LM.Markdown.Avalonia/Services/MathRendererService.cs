@@ -1,11 +1,20 @@
 using Avalonia.Controls;
 using Avalonia.Media;
 using AvaloniaMath.Controls;
+using System.Text.RegularExpressions;
 
 namespace LM.Markdown.Avalonia.Services;
 
 public class MathRendererService : IMathRenderer
 {
+    private static readonly Regex BMatrixEnvironmentRegex = new(
+        @"\\(?<keyword>begin|end)\{bmatrix\}",
+        RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
+    private static readonly Regex BMatrixCommandRegex = new(
+        @"\\bmatrix(?=\s*\{)",
+        RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
     public Control? CreateFormulaControl(string latex, double scale, IBrush? foreground)
     {
         latex = NormalizeLatex(latex);
@@ -41,6 +50,14 @@ public class MathRendererService : IMathRenderer
             normalized = normalized[1..^1].Trim();
         }
 
-        return normalized.Replace("\r\n", "\n").Replace("\r", "\n");
+        normalized = normalized.Replace("\r\n", "\n").Replace("\r", "\n");
+
+        // XAML-Math supports pmatrix but not bmatrix. Map the common LaTeX
+        // square-bracket matrix syntax to the equivalent command it understands.
+        normalized = BMatrixEnvironmentRegex.Replace(normalized, static match =>
+            $"\\{match.Groups["keyword"].Value}{{pmatrix}}");
+        normalized = BMatrixCommandRegex.Replace(normalized, @"\pmatrix");
+
+        return normalized;
     }
 }

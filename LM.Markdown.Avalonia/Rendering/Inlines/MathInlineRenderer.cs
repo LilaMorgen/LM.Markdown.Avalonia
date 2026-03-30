@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Layout;
@@ -24,18 +25,15 @@ public class MathInlineRenderer : InlineRenderer<MathInline>
                 var formulaControl = context.MathRenderer.CreateFormulaControl(latex, scale, foreground);
                 if (formulaControl != null)
                 {
+                    var verticalNudge = Math.Clamp(scale * 0.04, 0.5, 1);
+
                     // InlineUIContainer aligns relative to its own box. Because the
                     // selection overlay reserves a line-height-sized box, centering the
                     // formula inside that box lifts it above the surrounding text.
                     // Bottom-align the formula and use baseline alignment for the
                     // container so the formula sits on the same line baseline.
                     formulaControl.VerticalAlignment = VerticalAlignment.Bottom;
-
-                    // AvaloniaMath's visual bounds are still a touch tight compared to
-                    // surrounding glyphs, so apply a very small downward visual
-                    // compensation. Keep it subtle because the baseline fix already
-                    // handles most of the offset.
-                    formulaControl.RenderTransform = new TranslateTransform(0, Math.Clamp(scale * 0.04, 0.5, 1));
+                    formulaControl.Margin = new Thickness(0, verticalNudge, 0, 0);
 
                     // Use a Grid so we can separate the selection highlight
                     // (height-constrained to the text line-height) from the
@@ -61,9 +59,9 @@ public class MathInlineRenderer : InlineRenderer<MathInline>
 
                     var wrapper = new Grid { IsHitTestVisible = false };
                     wrapper.Children.Add(selectionBg);      // behind
-                    wrapper.Children.Add(formulaControl);    // on top
+                    wrapper.Children.Add(formulaControl);   // on top
 
-                    return [new InlineUIContainer(wrapper) { BaselineAlignment = BaselineAlignment.Baseline }];
+                    return [new InlineUIContainer(wrapper) { BaselineAlignment = global::Avalonia.Media.BaselineAlignment.Baseline }];
                 }
             }
             catch

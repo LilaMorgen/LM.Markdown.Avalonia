@@ -114,6 +114,34 @@ public static AppBuilder BuildAvaloniaApp()
 
 Inline math: $E = mc^2$
 
+**矩阵运算：**
+$$
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix}
+\times
+\begin{bmatrix}
+a \\ b \\ c
+\end{bmatrix}
+=
+\begin{bmatrix}
+1a + 2b + 3c \\
+4a + 5b + 6c \\
+7a + 8b + 9c
+\end{bmatrix}
+$$
+
+二次方程求根公式：$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$
+
+表格中的公式：
+
+| 公式名称 | LaTeX表达式           | 结果               |
+| -------- | --------------------- | ------------------ |
+| 求和     | $\sum_{i=1}^{n} i$    | $\frac{n(n+1)}{2}$ |
+| 积分     | $\int_{0}^{1} x^2 dx$ | $\frac{1}{3}$      |
+
 Block math:
 
 $$

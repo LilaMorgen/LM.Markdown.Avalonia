@@ -58,6 +58,13 @@ internal sealed class CrossBlockSelectionHandler
     /// <summary>CSS class applied to the visual overlay used by selectable non-text blocks.</summary>
     internal const string SelectableBlockOverlayClass = "selectable-block-overlay";
 
+    /// <summary>
+    /// Marks SelectableTextBlock instances that are inside the current cross-block
+    /// selection range even when Avalonia reports no text-range selection, such as
+    /// blocks containing only InlineUIContainer math formulas.
+    /// </summary>
+    private const string InlineContainerSelectionFallbackClass = "inline-container-selection-fallback";
+
     /// <summary>Cached brush used for non-text block selection overlay.</summary>
     private IBrush? _cachedSelectionBrush;
 
@@ -515,6 +522,8 @@ internal sealed class CrossBlockSelectionHandler
                 // Middle block: select all — delegates correct text length to Avalonia
                 block.SelectAll();
             }
+
+            SetInlineContainerSelectionFallback(block, true);
         }
 
         // Update visual highlights on InlineUIContainer elements (e.g., math formulas)
@@ -538,12 +547,20 @@ internal sealed class CrossBlockSelectionHandler
             int selStart = block.SelectionStart;
             int selEnd = block.SelectionEnd;
             bool hasSelection = selEnd > selStart;
+            bool selectAllInlineContainers = !hasSelection && HasInlineContainerSelectionFallback(block);
 
             // Resolve the selection brush from the block (matches text selection colour)
-            var selectionBrush = hasSelection ? block.SelectionBrush : null;
+            var selectionBrush = (hasSelection || selectAllInlineContainers) ? block.SelectionBrush : null;
 
             int offset = 0;
-            ApplyInlineHighlights(block.Inlines, ref offset, selStart, selEnd, hasSelection, selectionBrush);
+            ApplyInlineHighlights(
+                block.Inlines,
+                ref offset,
+                selStart,
+                selEnd,
+                hasSelection,
+                selectAllInlineContainers,
+                selectionBrush);
         }
     }
 
@@ -553,6 +570,7 @@ internal sealed class CrossBlockSelectionHandler
         int selStart,
         int selEnd,
         bool hasSelection,
+        bool selectAllInlineContainers,
         IBrush? selectionBrush)
     {
         foreach (var inline in inlines)
@@ -565,7 +583,7 @@ internal sealed class CrossBlockSelectionHandler
 
                 case Span s:
                     if (s.Inlines is { Count: > 0 })
-                        ApplyInlineHighlights(s.Inlines, ref offset, selStart, selEnd, hasSelection, selectionBrush);
+                        ApplyInlineHighlights(s.Inlines, ref offset, selStart, selEnd, hasSelection, selectAllInlineContainers, selectionBrush);
                     break;
 
                 case LineBreak:
@@ -573,7 +591,7 @@ internal sealed class CrossBlockSelectionHandler
                     break;
 
                 case InlineUIContainer iuc:
-                    bool isSelected = hasSelection && offset >= selStart && offset < selEnd;
+                    bool isSelected = selectAllInlineContainers || (hasSelection && offset >= selStart && offset < selEnd);
 
                     // Avalonia's SelectAll() (and programmatic SelectionEnd) may
                     // not count InlineUIContainer characters in the text length,
@@ -780,7 +798,10 @@ internal sealed class CrossBlockSelectionHandler
         {
             if (element is SelectableTextBlock stb)
             {
-                if (string.IsNullOrEmpty(stb.SelectedText))
+                bool hasInlineSelectionFallback = HasInlineContainerSelectionFallback(stb)
+                    && CountInlineUIContainers(stb.Inlines) > 0;
+
+                if (string.IsNullOrEmpty(stb.SelectedText) && !hasInlineSelectionFallback)
                     continue;
                 var span = FindTopLevelSourceSpan(stb);
                 int textLen = GetTextLength(stb);
@@ -788,8 +809,9 @@ internal sealed class CrossBlockSelectionHandler
                 // in SelectionEnd. Subtract IUC count so fully-selected blocks that
                 // contain inline formulas are still detected correctly.
                 int iucCount = CountInlineUIContainers(stb.Inlines);
-                bool fully = stb.SelectionStart <= 0 && stb.SelectionEnd >= textLen - iucCount;
-                entries.Add((element, fully, span, stb.SelectedText));
+                bool fully = hasInlineSelectionFallback
+                    || (stb.SelectionStart <= 0 && stb.SelectionEnd >= textLen - iucCount);
+                entries.Add((element, fully, span, string.IsNullOrEmpty(stb.SelectedText) ? null : stb.SelectedText));
             }
             else if (IsNonTextBlockSelected(element))
             {
@@ -992,6 +1014,7 @@ internal sealed class CrossBlockSelectionHandler
         {
             stb.SelectionStart = 0;
             stb.SelectionEnd = 0;
+            SetInlineContainerSelectionFallback(stb, false);
         }
         else
         {
@@ -1069,6 +1092,17 @@ internal sealed class CrossBlockSelectionHandler
 
         return null;
     }
+
+    private static void SetInlineContainerSelectionFallback(SelectableTextBlock block, bool enabled)
+    {
+        if (enabled)
+            block.Classes.Add(InlineContainerSelectionFallbackClass);
+        else
+            block.Classes.Remove(InlineContainerSelectionFallbackClass);
+    }
+
+    private static bool HasInlineContainerSelectionFallback(SelectableTextBlock block)
+        => block.Classes.Contains(InlineContainerSelectionFallbackClass);
 
     #endregion
 }

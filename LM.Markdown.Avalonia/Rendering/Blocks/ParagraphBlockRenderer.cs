@@ -1,6 +1,8 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Markdig.Extensions.Mathematics;
+using Markdig.Syntax.Inlines;
 using Markdig.Syntax;
 
 namespace LM.Markdown.Avalonia.Rendering.Blocks;
@@ -16,9 +18,14 @@ public class ParagraphBlockRenderer : BlockRenderer<ParagraphBlock>
             FontSize = context.GetDouble("MarkdownFontSize", 14),
             FontFamily = context.GetFontFamily("MarkdownFontFamily"),
             Margin = context.GetThickness("MarkdownParagraphMargin", new Thickness(0, 0, 0, 10)),
-            LineHeight = context.GetDouble("MarkdownFontSize", 14) * context.GetDouble("MarkdownLineHeight", 1.6),
         };
         context.ApplySelectableTextStyle(textBlock);
+
+        if (!ContainsMathInline(block.Inline))
+        {
+            textBlock.LineHeight = context.GetDouble("MarkdownFontSize", 14)
+                * context.GetDouble("MarkdownLineHeight", 1.6);
+        }
 
         if (block.Inline != null)
         {
@@ -32,5 +39,22 @@ public class ParagraphBlockRenderer : BlockRenderer<ParagraphBlock>
         LinkInteractionHelper.AttachIfNeeded(textBlock, context);
 
         return textBlock;
+    }
+
+    private static bool ContainsMathInline(ContainerInline? container)
+    {
+        if (container == null)
+            return false;
+
+        for (Inline? current = container.FirstChild; current != null; current = current.NextSibling)
+        {
+            if (current is MathInline)
+                return true;
+
+            if (current is ContainerInline childContainer && ContainsMathInline(childContainer))
+                return true;
+        }
+
+        return false;
     }
 }
