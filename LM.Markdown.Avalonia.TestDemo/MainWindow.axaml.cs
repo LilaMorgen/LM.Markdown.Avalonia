@@ -23,7 +23,7 @@ This is a **comprehensive demo** of the *Markdown rendering control*.
 
 You can use **bold**, *italic*, ***bold italic***, and ~~strikethrough~~ text.
 
-Inline `code` looks like this, and here is a [link](https://github.com).
+Inline `code` looks like this, and here is a [link](https://github.com/LilaMorgen/LM.Markdown.Avalonia).
 
 ### Code Block
 
@@ -63,7 +63,7 @@ public static AppBuilder BuildAvaloniaApp()
 ### Blockquote
 
 > "The best way to predict the future is to invent it."
-> [link](https://github.com)
+> [link](https://github.com/LilaMorgen/LM.Markdown.Avalonia)
 > — Alan Kay
 
 ### Lists
@@ -74,7 +74,7 @@ public static AppBuilder BuildAvaloniaApp()
    1. First child item
 2. Second item
 3. Third item
-4. [link](https://github.com)
+4. [link](https://github.com/LilaMorgen/LM.Markdown.Avalonia)
 
 **Unordered list:**
 
@@ -84,7 +84,7 @@ public static AppBuilder BuildAvaloniaApp()
 - TextMateSharp highlighting
 - CSharpMath formulas
 - Mermaider diagrams
-- [link](https://github.com)
+- [link](https://github.com/LilaMorgen/LM.Markdown.Avalonia)
 
 ### Task List
 
@@ -93,7 +93,7 @@ public static AppBuilder BuildAvaloniaApp()
 - [x] Theme support
 - [ ] PDF export
 - [ ] Plugin system
-- [ ] [link](https://github.com)
+- [ ] [link](https://github.com/LilaMorgen/LM.Markdown.Avalonia)
 
 ### Table
 
@@ -104,7 +104,7 @@ public static AppBuilder BuildAvaloniaApp()
 | Streaming | Done | Medium |
 | Math | Done | Medium |
 | Mermaid | Done | Low |
-| Link | Done | [link](https://github.com) |
+| Link | Done | [link](https://github.com/LilaMorgen/LM.Markdown.Avalonia) |
 
 ### Image
 

@@ -1,8 +1,27 @@
 # LM.Markdown.Avalonia
 
+<div align="center">
+
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Release Badge](https://img.shields.io/badge/release-v_1.0.1-blue)
+
+</div>
+
 LM.Markdown.Avalonia is an Avalonia markdown rendering control built for desktop applications that need rich markdown display, incremental streaming updates, syntax-highlighted code blocks, math formulas, tables, task lists, image loading, and Mermaid diagram rendering.
 
 For the Simplified Chinese version of this document, see [doc/README-ZH.md](doc/README-ZH.md).
+
+## Demo
+
+![stream-dark](./images/stream-dark.gif)
+
+### Light
+
+![all-light](./images/all-light.png)
+
+### Dark
+
+![all-light](./images/all-dark.png)
 
 ## Repository Overview
 
@@ -10,7 +29,6 @@ This repository contains a reusable markdown control library and a runnable demo
 
 - `LM.Markdown.Avalonia/`: library project containing the markdown control, parsers, renderers, services, and theme resources.
 - `LM.Markdown.Avalonia.TestDemo/`: Avalonia desktop demo application used to verify rendering and interaction behavior.
-- `reference/`: earlier reference implementation retained for comparison and migration.
 
 ## Key Features
 

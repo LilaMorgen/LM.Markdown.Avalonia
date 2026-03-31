@@ -1,8 +1,27 @@
 # LM.Markdown.Avalonia
 
+<div align="center">
+
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Release Badge](https://img.shields.io/badge/release-v_1.0.1-blue)
+
+</div>
+
 LM.Markdown.Avalonia 是一个面向 Avalonia 桌面应用的 Markdown 渲染控件，适合需要富文本 Markdown 展示、增量流式输出、代码高亮、数学公式、表格、任务列表、图片加载和 Mermaid 图表渲染的场景。
 
 如需英文版说明，请查看 [README.md](../README.md)。
+
+## 演示效果
+
+![stream-dark](../images/stream-dark.gif)
+
+### 明亮主题
+
+![all-light](../images/all-light.png)
+
+### 暗色主题
+
+![all-light](../images/all-dark.png)
 
 ## 仓库说明
 
@@ -10,7 +29,6 @@ LM.Markdown.Avalonia 是一个面向 Avalonia 桌面应用的 Markdown 渲染控
 
 - `LM.Markdown.Avalonia/`：控件库项目，包含 Markdown 控件、解析管线、渲染器、服务和主题资源。
 - `LM.Markdown.Avalonia.TestDemo/`：Avalonia 桌面 Demo，用于验证渲染和交互行为。
-- `reference/`：历史参考实现，用于对照和迁移。
 
 ## 核心能力
 
