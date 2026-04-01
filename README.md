@@ -9,7 +9,7 @@
 
 LM.Markdown.Avalonia is an Avalonia markdown rendering control built for desktop applications that need rich markdown display, incremental streaming updates, syntax-highlighted code blocks, math formulas, tables, task lists, image loading, and Mermaid diagram rendering.
 
-For the Simplified Chinese version of this document, see [doc/README-ZH.md](doc/README-ZH.md).
+For the Simplified Chinese version of this document, see [doc/README-ZH.md](https://github.com/LilaMorgen/LM.Markdown.Avalonia/blob/main/doc/README-ZH.md).
 
 ## Demo
 
@@ -23,12 +23,14 @@ For the Simplified Chinese version of this document, see [doc/README-ZH.md](doc/
 
 ![all-light](./images/all-dark.png)
 
-## Repository Overview
+## Package Overview
 
-This repository contains a reusable markdown control library and a runnable demo application.
+LM.Markdown.Avalonia is distributed as a NuGet package for Avalonia desktop applications.
 
-- `LM.Markdown.Avalonia/`: library project containing the markdown control, parsers, renderers, services, and theme resources.
-- `LM.Markdown.Avalonia.TestDemo/`: Avalonia desktop demo application used to verify rendering and interaction behavior.
+- Package ID: `LM.Markdown.Avalonia`
+- Target framework: `.NET 10`
+- Avalonia compatibility: `11.3.x`
+- Source repository and sample app: [LM.Markdown.Avalonia on GitHub](https://github.com/LilaMorgen/LM.Markdown.Avalonia)
 
 ## Key Features
 
@@ -76,13 +78,19 @@ Architecture notes:
 
 ## Getting Started
 
-### 1. Reference the library
+### 1. Install the package
 
-If you are working inside the solution, add a project reference:
+Using the .NET CLI:
+
+```powershell
+dotnet add package LM.Markdown.Avalonia --version 1.0.1
+```
+
+Or add a package reference manually:
 
 ```xml
 <ItemGroup>
-  <ProjectReference Include="..\LM.Markdown.Avalonia\LM.Markdown.Avalonia.csproj" />
+  <PackageReference Include="LM.Markdown.Avalonia" Version="1.0.1" />
 </ItemGroup>
 ```
 
@@ -156,7 +164,7 @@ viewer.AppendMarkdown("\n\nSecond chunk.");
 
 ## Simple Usage
 
-For a complete runnable application, see `LM.Markdown.Avalonia.TestDemo`.
+For a complete runnable application, see the sample app in the repository: [LM.Markdown.Avalonia.TestDemo](https://github.com/LilaMorgen/LM.Markdown.Avalonia/tree/main/LM.Markdown.Avalonia.TestDemo).
 
 Minimal XAML:
 
@@ -190,7 +198,9 @@ public partial class MainWindow : Window
 }
 ```
 
-## Run the Demo
+## Sample App
+
+To run the sample app from source:
 
 ```powershell
 dotnet run --project .\LM.Markdown.Avalonia.TestDemo\LM.Markdown.Avalonia.TestDemo.csproj

@@ -15,7 +15,11 @@
     <Product>LM.Markdown.Avalonia</Product>
     <Description>Avalonia markdown rendering control with streaming updates, syntax highlighting, math formulas, tables, images, and Mermaid diagram support.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/LilaMorgen/LM.Markdown.Avalonia</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/LilaMorgen/LM.Markdown.Avalonia</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <PackageTags>avalonia;markdown;markdig;mermaid;math;syntax-highlighting</PackageTags>
+    <PackageIcon>images/lm.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
@@ -34,6 +38,10 @@
 
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="\" Link="README.md" />
+    <None Include="..\images\lm.png" Pack="true" PackagePath="images\" Link="images\lm.png" />
+    <None Include="..\images\all-dark.png" Pack="true" PackagePath="images\" Link="images\all-dark.png" />
+    <None Include="..\images\all-light.png" Pack="true" PackagePath="images\" Link="images\all-light.png" />
+    <None Include="..\images\stream-dark.gif" Pack="true" PackagePath="images\" Link="images\stream-dark.gif" />
   </ItemGroup>
 
   <ItemGroup>

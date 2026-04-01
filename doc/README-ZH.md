@@ -9,7 +9,7 @@
 
 LM.Markdown.Avalonia 是一个面向 Avalonia 桌面应用的 Markdown 渲染控件，适合需要富文本 Markdown 展示、增量流式输出、代码高亮、数学公式、表格、任务列表、图片加载和 Mermaid 图表渲染的场景。
 
-如需英文版说明，请查看 [README.md](../README.md)。
+如需英文版说明，请查看 [README.md](https://github.com/LilaMorgen/LM.Markdown.Avalonia/blob/main/README.md)。
 
 ## 演示效果
 
@@ -23,12 +23,14 @@ LM.Markdown.Avalonia 是一个面向 Avalonia 桌面应用的 Markdown 渲染控
 
 ![all-light](../images/all-dark.png)
 
-## 仓库说明
+## 包说明
 
-本仓库包含一个可复用的 Markdown 控件库，以及一个可直接运行的演示程序。
+LM.Markdown.Avalonia 以 NuGet 包形式分发，面向 Avalonia 桌面应用。
 
-- `LM.Markdown.Avalonia/`：控件库项目，包含 Markdown 控件、解析管线、渲染器、服务和主题资源。
-- `LM.Markdown.Avalonia.TestDemo/`：Avalonia 桌面 Demo，用于验证渲染和交互行为。
+- 包 ID：`LM.Markdown.Avalonia`
+- 目标框架：`.NET 10`
+- Avalonia 兼容版本：`11.3.x`
+- 源码仓库与示例程序：[LM.Markdown.Avalonia on GitHub](https://github.com/LilaMorgen/LM.Markdown.Avalonia)
 
 ## 核心能力
 
@@ -75,13 +77,19 @@ flowchart TD
 
 ## 使用方法
 
-### 1. 引用库项目
+### 1. 安装 NuGet 包
 
-如果你在当前解决方案内使用，直接添加项目引用：
+使用 .NET CLI：
+
+```powershell
+dotnet add package LM.Markdown.Avalonia --version 1.0.1
+```
+
+或者手动添加包引用：
 
 ```xml
 <ItemGroup>
-  <ProjectReference Include="..\LM.Markdown.Avalonia\LM.Markdown.Avalonia.csproj" />
+  <PackageReference Include="LM.Markdown.Avalonia" Version="1.0.1" />
 </ItemGroup>
 ```
 
@@ -155,7 +163,7 @@ viewer.AppendMarkdown("\n\nSecond chunk.");
 
 ## 简单使用
 
-完整可运行示例请查看 `LM.Markdown.Avalonia.TestDemo`。
+完整可运行示例请查看仓库中的示例程序：[LM.Markdown.Avalonia.TestDemo](https://github.com/LilaMorgen/LM.Markdown.Avalonia/tree/main/LM.Markdown.Avalonia.TestDemo)。
 
 最小 XAML 示例：
 
@@ -189,7 +197,9 @@ public partial class MainWindow : Window
 }
 ```
 
-## 运行演示程序
+## 示例程序
+
+如果你想从源码运行示例程序：
 
 ```powershell
 dotnet run --project .\LM.Markdown.Avalonia.TestDemo\LM.Markdown.Avalonia.TestDemo.csproj
