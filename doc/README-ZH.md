@@ -9,7 +9,7 @@
 
 LM.Markdown.Avalonia 是一个面向 Avalonia 桌面应用的 Markdown 渲染控件，适合需要富文本 Markdown 展示、增量流式输出、代码高亮、数学公式、表格、任务列表、图片加载和 Mermaid 图表渲染的场景。
 
-如需英文版说明，请查看 [README.md](https://github.com/LilaMorgen/LM.Markdown.Avalonia/blob/main/README.md)。
+如需英文版说明，请查看 [README.md](https://github.com/LilaMorgen/LM.Markdown.Avalonia/blob/master/README.md)。
 
 ## 演示效果
 
