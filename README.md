@@ -9,7 +9,7 @@
 
 LM.Markdown.Avalonia is an Avalonia markdown rendering control built for desktop applications that need rich markdown display, incremental streaming updates, syntax-highlighted code blocks, math formulas, tables, task lists, image loading, and Mermaid diagram rendering.
 
-For the Simplified Chinese version of this document, see [doc/README-ZH.md](https://github.com/LilaMorgen/LM.Markdown.Avalonia/blob/main/doc/README-ZH.md).
+For the Simplified Chinese version of this document, see [doc/README-ZH.md](https://github.com/LilaMorgen/LM.Markdown.Avalonia/blob/master/doc/README-ZH.md).
 
 ## Demo
 
