@@ -3,7 +3,7 @@
 <div align="center">
 
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
-![Release Badge](https://img.shields.io/badge/release-v_1.0.1-blue)
+[![Release Badge](https://img.shields.io/nuget/v/LM.Markdown.Avalonia?color=blue&style=flat-square)](https://www.nuget.org/packages/LM.Markdown.Avalonia)
 
 </div>
 
